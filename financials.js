@@ -148,7 +148,7 @@ function updateFinancialItem(key, percentage) {
     
     // Recalcular valores dependientes
     financialData.ebitda = financialData.grossProfit - financialData.operatingExpenses;
-    financialData.operatingProfit = financialData.ebitda; // Simplificación
+    financialData.operatingProfit = financialData.ebitda;
     financialData.netProfit = financialData.operatingProfit - financialData.taxes;
     financialData.operatingMargin = (financialData.operatingProfit / financialData.revenue) * 100;
     financialData.netMargin = (financialData.netProfit / financialData.revenue) * 100;
@@ -160,10 +160,13 @@ function updateFinancialItem(key, percentage) {
 
 // Actualizar KPIs
 function updateKPIs() {
+    document.getElementById('kpi-revenue').textContent = formatCurrency(financialData.revenue);
     document.getElementById('kpi-ebitda').textContent = formatCurrency(financialData.ebitda);
+    document.getElementById('kpi-net-profit').textContent = formatCurrency(financialData.netProfit);
     document.getElementById('kpi-roi').textContent = ((financialData.netProfit / (financialData.revenue * 0.5)) * 100).toFixed(1) + '%';
     document.getElementById('kpi-transactions').textContent = financialData.transactions.toLocaleString();
-    document.getElementById('kpi-nps').textContent = Math.floor(Math.random() * 30 + 60); // Valor aleatorio entre 60-90
+    document.getElementById('kpi-operating-margin').textContent = financialData.operatingMargin.toFixed(1) + '%';
+    document.getElementById('kpi-net-margin').textContent = financialData.netMargin.toFixed(1) + '%';
 }
 
 // Renderizar gráficos financieros
@@ -201,117 +204,58 @@ function renderFinancialCharts() {
     });
     revenueByUnitChart.render();
     
-    // Gráfico de transacciones por producto
-    const transactionsByProductData = window.productsData.map(product => ({
-        name: product.name,
-        data: product.annualTransactions || 0
-    }));
-    
-    const transactionsByProductChart = new ApexCharts(document.getElementById('transactions-by-product-chart'), {
-        series: [{
-            name: 'Transacciones',
-            data: transactionsByProductData.map(item => item.data)
-        }],
-        chart: {
-            type: 'bar',
-            height: 350
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 4,
-                horizontal: true,
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        xaxis: {
-            categories: transactionsByProductData.map(item => item.name),
-        },
-        colors: ['#3498db']
-    });
-    transactionsByProductChart.render();
-    
-    // Gráfico de evolución financiera
+    // Gráfico de evolución financiera mensual
     const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    const financialEvolutionCtx = document.getElementById('financial-evolution-chart').getContext('2d');
-    
-    // Generar datos mensuales aleatorios basados en los anuales
     const monthlyRevenue = generateMonthlyData(financialData.revenue);
     const monthlyCosts = generateMonthlyData(financialData.costOfSales);
     const monthlyProfit = generateMonthlyData(financialData.netProfit);
     
-    new Chart(financialEvolutionCtx, {
-        type: 'line',
-        data: {
-            labels: months,
-            datasets: [
-                {
-                    label: 'Ingresos',
-                    data: monthlyRevenue,
-                    borderColor: '#3498db',
-                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                },
-                {
-                    label: 'Costos',
-                    data: monthlyCosts,
-                    borderColor: '#e74c3c',
-                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                },
-                {
-                    label: 'Utilidad Neta',
-                    data: monthlyProfit,
-                    borderColor: '#2ecc71',
-                    backgroundColor: 'rgba(46, 204, 113, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                }
+    const financialEvolutionChart = new ApexCharts(document.getElementById('financial-evolution-chart'), {
+        series: [
+            {
+                name: 'Ingresos',
+                data: monthlyRevenue
             },
-            scales: {
-                y: {
-                    beginAtZero: true
+            {
+                name: 'Costos',
+                data: monthlyCosts
+            },
+            {
+                name: 'Utilidad Neta',
+                data: monthlyProfit
+            }
+        ],
+        chart: {
+            type: 'line',
+            height: 350
+        },
+        colors: ['#3498db', '#e74c3c', '#2ecc71'],
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            categories: months
+        },
+        yaxis: {
+            labels: {
+                formatter: function(value) {
+                    return '$' + Math.round(value).toLocaleString();
+                }
+            }
+        },
+        tooltip: {
+            y: {
+                formatter: function(value) {
+                    return '$' + value.toLocaleString();
                 }
             }
         }
     });
-    
-    // Gráfico de composición del P&L
-    const profitCompositionChart = new ApexCharts(document.getElementById('profit-composition-chart'), {
-        series: [financialData.revenue, financialData.costOfSales, financialData.operatingExpenses, financialData.taxes, financialData.netProfit],
-        chart: {
-            type: 'pie',
-            height: 350
-        },
-        labels: ['Ingresos', 'Costos Directos', 'Gastos Operativos', 'Impuestos', 'Utilidad Neta'],
-        colors: ['#3498db', '#e74c3c', '#f39c12', '#9b59b6', '#2ecc71'],
-        legend: {
-            position: 'bottom'
-        }
-    });
-    profitCompositionChart.render();
+    financialEvolutionChart.render();
     
     // Gráfico de margen EBITDA
     const ebitdaMarginChart = new ApexCharts(document.getElementById('ebitda-margin-chart'), {
-        series: [{
-            name: 'Margen EBITDA',
-            data: [financialData.operatingMargin]
-        }],
+        series: [financialData.operatingMargin],
         chart: {
             type: 'radialBar',
             height: 350
@@ -326,20 +270,18 @@ function renderFinancialCharts() {
                 },
                 dataLabels: {
                     name: {
-                        offsetY: -10,
+                        fontSize: '16px',
                         color: '#333',
-                        fontSize: '13px'
+                        offsetY: -10
                     },
                     value: {
-                        color: '#333',
+                        offsetY: 0,
                         fontSize: '30px',
-                        show: true
+                        color: '#333',
+                        formatter: function(val) {
+                            return val.toFixed(1) + '%';
+                        }
                     }
-                },
-                track: {
-                    background: '#e0e0e0',
-                    strokeWidth: '97%',
-                    margin: 5,
                 }
             }
         },
@@ -353,9 +295,6 @@ function renderFinancialCharts() {
                 opacityTo: 1,
                 stops: [0, 50, 65, 91]
             },
-        },
-        stroke: {
-            dashArray: 4
         },
         labels: ['Margen EBITDA'],
     });

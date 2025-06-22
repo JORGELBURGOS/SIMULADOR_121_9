@@ -10,20 +10,22 @@
             "revenue": 15,
             "transactions": 25,
             "cost": 10
-        }
+        },
+        "category": "growth"
     },
     {
         "id": "strategy-2",
         "title": "Prevención de Fraude con IA",
         "description": "Implementar sistema de inteligencia artificial para detección de transacciones fraudulentas en tiempo real.",
         "source": "pestel",
-        "businessUnit": "Instant Payments",
+        "businessUnit": "Risk Management",
         "products": ["Pagos con Transferencias", "Transferencias Entrantes"],
         "impact": {
             "revenue": 5,
             "transactions": 8,
             "cost": -5
-        }
+        },
+        "category": "optimization"
     },
     {
         "id": "strategy-3",
@@ -36,7 +38,8 @@
             "revenue": 20,
             "transactions": 15,
             "cost": 12
-        }
+        },
+        "category": "differentiation"
     },
     {
         "id": "strategy-4",
@@ -49,7 +52,8 @@
             "revenue": 10,
             "transactions": 18,
             "cost": 8
-        }
+        },
+        "category": "retention"
     },
     {
         "id": "strategy-5",
@@ -62,6 +66,35 @@
             "revenue": 25,
             "transactions": 30,
             "cost": 15
-        }
+        },
+        "category": "innovation"
+    },
+    {
+        "id": "strategy-6",
+        "title": "Colaboración con Reguladores",
+        "description": "Establecer programa de relaciones con gobiernos y bancos centrales para posicionarse como socio estratégico.",
+        "source": "pestel",
+        "businessUnit": "Corporate",
+        "products": ["Todos"],
+        "impact": {
+            "revenue": 8,
+            "transactions": 5,
+            "cost": 5
+        },
+        "category": "compliance"
+    },
+    {
+        "id": "strategy-7",
+        "title": "Diferenciación por Valor Agregado",
+        "description": "Desarrollar capacidades únicas de valor agregado para distinguirse de competidores.",
+        "source": "porter",
+        "businessUnit": "Product Development",
+        "products": ["Todos"],
+        "impact": {
+            "revenue": 12,
+            "transactions": 10,
+            "cost": 7
+        },
+        "category": "differentiation"
     }
 ]

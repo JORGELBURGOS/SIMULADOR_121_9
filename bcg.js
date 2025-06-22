@@ -7,7 +7,8 @@ let bcgData = [
         marketGrowth: 15,
         marketShare: 25,
         revenue: 0,
-        transactions: 0
+        transactions: 0,
+        category: 'cash-cow'
     },
     {
         id: 'debines',
@@ -16,7 +17,8 @@ let bcgData = [
         marketGrowth: 8,
         marketShare: 18,
         revenue: 0,
-        transactions: 0
+        transactions: 0,
+        category: 'cash-cow'
     },
     {
         id: 'pct',
@@ -25,7 +27,8 @@ let bcgData = [
         marketGrowth: 45,
         marketShare: 12,
         revenue: 0,
-        transactions: 0
+        transactions: 0,
+        category: 'question-mark'
     },
     {
         id: 'transferencias_entrantes',
@@ -34,7 +37,8 @@ let bcgData = [
         marketGrowth: 30,
         marketShare: 20,
         revenue: 0,
-        transactions: 0
+        transactions: 0,
+        category: 'star'
     },
     {
         id: 'transferencias_salientes_psp',
@@ -43,7 +47,28 @@ let bcgData = [
         marketGrowth: 35,
         marketShare: 15,
         revenue: 0,
-        transactions: 0
+        transactions: 0,
+        category: 'star'
+    },
+    {
+        id: 'qr_credito',
+        name: 'QR Crédito',
+        businessUnit: 'Digital Payments',
+        marketGrowth: 35,
+        marketShare: 18,
+        revenue: 0,
+        transactions: 0,
+        category: 'star'
+    },
+    {
+        id: 'prevencion_fraude',
+        name: 'Prevención del Fraude',
+        businessUnit: 'Risk Management',
+        marketGrowth: 25,
+        marketShare: 30,
+        revenue: 0,
+        transactions: 0,
+        category: 'cash-cow'
     }
 ];
 
@@ -52,16 +77,10 @@ let bcgStrategies = [];
 
 // Inicializar módulo BCG
 function initBcgMatrix() {
-    // Calcular ingresos y transacciones basados en datos financieros
     calculateBcgFinancials();
-    
-    // Renderizar matriz BCG
     renderBcgMatrix();
-    
-    // Configurar eventos
+    renderInteractiveBCG();
     setupBcgEvents();
-    
-    // Generar estrategias sugeridas iniciales
     generateBcgStrategies();
 }
 
@@ -74,6 +93,17 @@ function calculateBcgFinancials() {
         if (product) {
             item.revenue = product.annualRevenue || 0;
             item.transactions = product.annualTransactions || 0;
+            
+            // Actualizar categoría basada en datos reales
+            if (item.marketGrowth > 20 && item.marketShare > 15) {
+                item.category = 'star';
+            } else if (item.marketGrowth > 20 && item.marketShare <= 15) {
+                item.category = 'question-mark';
+            } else if (item.marketGrowth <= 20 && item.marketShare > 15) {
+                item.category = 'cash-cow';
+            } else {
+                item.category = 'dog';
+            }
         }
     });
 }
@@ -86,49 +116,110 @@ function renderBcgMatrix() {
     document.getElementById('cash-cows-items').innerHTML = '';
     document.getElementById('dogs-items').innerHTML = '';
     
-    // Determinar métricas actuales
-    const growthMetric = document.getElementById('growth-metric').value;
-    const shareMetric = document.getElementById('share-metric').value;
-    
     // Clasificar cada unidad de negocio
     bcgData.forEach(item => {
-        const growthValue = item[growthMetric === 'market_growth' ? 'marketGrowth' : 
-                              (growthMetric === 'revenue_growth' ? 'revenue' : 'transactions')];
-        const shareValue = item[shareMetric === 'market_share' ? 'marketShare' : 'revenue'];
-        
-        // Determinar cuadrante (umbrales arbitrarios)
-        let quadrant;
-        if (growthValue > 20 && shareValue > 15) {
-            quadrant = 'stars';
-        } else if (growthValue > 20 && shareValue <= 15) {
-            quadrant = 'question-marks';
-        } else if (growthValue <= 20 && shareValue > 15) {
-            quadrant = 'cash-cows';
-        } else {
-            quadrant = 'dogs';
-        }
+        const quadrant = item.category;
         
         // Crear elemento para el cuadrante
         const element = document.createElement('div');
         element.className = 'bcg-item tooltip';
         element.textContent = item.name;
-        element.dataset.tooltip = `${item.businessUnit}\nCrecimiento: ${growthValue}%\nParticipación: ${shareValue}%`;
+        element.dataset.tooltip = `
+            ${item.businessUnit}
+            Crecimiento: ${item.marketGrowth}%
+            Participación: ${item.marketShare}%
+            Ingresos: $${item.revenue.toLocaleString()}
+            Transacciones: ${item.transactions.toLocaleString()}
+        `;
         
         // Añadir al cuadrante correspondiente
         document.getElementById(`${quadrant}-items`).appendChild(element);
     });
 }
 
+// Renderizar matriz BCG interactiva
+function renderInteractiveBCG() {
+    const ctx = document.getElementById('interactive-bcg-chart').getContext('2d');
+    
+    // Destruir gráfico anterior si existe
+    if (window.interactiveBCGChart) {
+        window.interactiveBCGChart.destroy();
+    }
+    
+    window.interactiveBCGChart = new Chart(ctx, {
+        type: 'bubble',
+        data: {
+            datasets: bcgData.map(item => ({
+                label: item.name,
+                data: [{
+                    x: item.marketShare,
+                    y: item.marketGrowth,
+                    r: Math.sqrt(item.revenue) / 1000 || 5
+                }],
+                backgroundColor: getBcgColor(item.category),
+                borderColor: '#fff',
+                borderWidth: 1
+            }))
+        },
+        options: {
+            scales: {
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Tasa de Crecimiento (%)'
+                    },
+                    min: 0,
+                    max: 50
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Participación de Mercado (%)'
+                    },
+                    min: 0,
+                    max: 35
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const item = bcgData.find(i => i.name === context.dataset.label);
+                            return [
+                                `Producto: ${item.name}`,
+                                `Unidad: ${item.businessUnit}`,
+                                `Crecimiento: ${item.marketGrowth}%`,
+                                `Participación: ${item.marketShare}%`,
+                                `Ingresos: $${item.revenue.toLocaleString()}`,
+                                `Transacciones: ${item.transactions.toLocaleString()}`
+                            ];
+                        }
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+}
+
+function getBcgColor(category) {
+    const colors = {
+        'star': 'rgba(255, 206, 86, 0.7)',
+        'cash-cow': 'rgba(75, 192, 192, 0.7)',
+        'question-mark': 'rgba(54, 162, 235, 0.7)',
+        'dog': 'rgba(255, 99, 132, 0.7)'
+    };
+    return colors[category] || 'rgba(153, 102, 255, 0.7)';
+}
+
 // Configurar eventos BCG
 function setupBcgEvents() {
-    // Eventos para los selectores de métricas
     document.getElementById('growth-metric').addEventListener('change', renderBcgMatrix);
     document.getElementById('share-metric').addEventListener('change', renderBcgMatrix);
-    
-    // Evento para aplicar estrategia
     document.getElementById('apply-bcg-strategy').addEventListener('click', applyBcgStrategy);
     
-    // Eventos para los ítems de la matriz
     document.querySelectorAll('.bcg-item').forEach(item => {
         item.addEventListener('click', function() {
             const productName = this.textContent;
@@ -140,202 +231,35 @@ function setupBcgEvents() {
     });
 }
 
-// Aplicar estrategia BCG
-function applyBcgStrategy() {
-    const businessUnit = document.getElementById('business-unit-select').value;
-    const strategyType = document.getElementById('growth-strategy').value;
-    
-    // Validar selección
-    if (!businessUnit) {
-        alert('Por favor selecciona una unidad de negocio');
-        return;
-    }
-    
-    // Crear estrategia
-    const strategy = {
-        id: Date.now().toString(),
-        type: strategyType,
-        businessUnit: businessUnit,
-        date: new Date().toISOString().split('T')[0],
-        description: getBcgStrategyDescription(strategyType, businessUnit)
-    };
-    
-    // Añadir a la lista de estrategias
-    bcgStrategies.push(strategy);
-    
-    // Actualizar lista de estrategias
-    updateBcgStrategiesList();
-    
-    // Mostrar notificación
-    showNotification(`Estrategia aplicada a ${businessUnit}`, 'success');
-}
-
-// Obtener descripción de estrategia BCG
-function getBcgStrategyDescription(type, businessUnit) {
-    const strategies = {
-        penetration: `Incrementar participación de mercado en ${businessUnit} mediante campañas agresivas de marketing y mejora de la retención.`,
-        development: `Desarrollar nuevas características y funcionalidades para los productos existentes en ${businessUnit} para atraer más clientes.`,
-        expansion: `Expandir ${businessUnit} a nuevos mercados geográficos o segmentos de clientes no atendidos.`,
-        diversification: `Diversificar la oferta de ${businessUnit} con productos complementarios o nuevos modelos de negocio.`
-    };
-    
-    return strategies[type] || `Estrategia aplicada a ${businessUnit}`;
-}
-
-// Actualizar lista de estrategias BCG
-function updateBcgStrategiesList() {
-    const listContainer = document.getElementById('bcg-strategies-list');
-    listContainer.innerHTML = '';
-    
-    if (bcgStrategies.length === 0) {
-        listContainer.innerHTML = '<p>No se han aplicado estrategias aún. Usa el formulario para crear una.</p>';
-        return;
-    }
-    
-    bcgStrategies.forEach(strategy => {
-        const strategyCard = document.createElement('div');
-        strategyCard.className = 'strategy-card';
-        
-        const strategyTypeName = {
-            penetration: 'Penetración de Mercado',
-            development: 'Desarrollo de Producto',
-            expansion: 'Expansión de Mercado',
-            diversification: 'Diversificación'
-        }[strategy.type] || strategy.type;
-        
-        strategyCard.innerHTML = `
-            <h4>${strategyTypeName}</h4>
-            <p>${strategy.description}</p>
-            <div class="strategy-meta">
-                <span><i class="fas fa-building"></i> ${strategy.businessUnit}</span>
-                <span><i class="fas fa-calendar"></i> ${strategy.date}</span>
-            </div>
-            <div class="strategy-actions">
-                <button class="btn btn-sm btn-primary" data-id="${strategy.id}">Simular</button>
-                <button class="btn btn-sm btn-danger" data-id="${strategy.id}">Eliminar</button>
-            </div>
-        `;
-        
-        listContainer.appendChild(strategyCard);
-    });
-    
-    // Configurar eventos para los botones
-    document.querySelectorAll('#bcg-strategies-list .btn-primary').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const strategyId = this.dataset.id;
-            simulateBcgStrategy(strategyId);
-        });
-    });
-    
-    document.querySelectorAll('#bcg-strategies-list .btn-danger').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const strategyId = this.dataset.id;
-            removeBcgStrategy(strategyId);
-        });
-    });
-}
-
-// Simular estrategia BCG
-function simulateBcgStrategy(strategyId) {
-    const strategy = bcgStrategies.find(s => s.id === strategyId);
-    if (!strategy) return;
-    
-    // Mostrar modal de simulación
-    const modalTitle = document.getElementById('strategyModalTitle');
-    const modalBody = document.getElementById('strategyModalBody');
-    
-    modalTitle.textContent = `Simular: ${strategy.businessUnit}`;
-    
-    modalBody.innerHTML = `
-        <h5>${strategy.description}</h5>
-        <div class="form-group">
-            <label for="simulation-investment">Inversión estimada ($):</label>
-            <input type="number" id="simulation-investment" class="form-control" min="0" step="1000" value="50000">
-        </div>
-        <div class="form-group">
-            <label for="simulation-duration">Duración (meses):</label>
-            <input type="number" id="simulation-duration" class="form-control" min="1" max="36" value="12">
-        </div>
-        <div class="form-group">
-            <label for="simulation-growth">Crecimiento esperado (%):</label>
-            <input type="number" id="simulation-growth" class="form-control" min="0" max="100" step="1" value="15">
-        </div>
-        <div class="potential-impact">
-            <h5>Impacto Estimado:</h5>
-            <ul>
-                <li>Aumento en participación de mercado: 3-8%</li>
-                <li>Incremento en ingresos: 10-25%</li>
-                <li>ROI esperado: 12-18 meses</li>
-            </ul>
-        </div>
-    `;
-    
-    // Configurar botón de aplicar
-    const applyBtn = document.getElementById('applyStrategyFromModal');
-    applyBtn.textContent = 'Aplicar Simulación';
-    applyBtn.onclick = function() {
-        const investment = parseFloat(document.getElementById('simulation-investment').value);
-        const duration = parseInt(document.getElementById('simulation-duration').value);
-        const growth = parseInt(document.getElementById('simulation-growth').value);
-        
-        if (isNaN(investment) || isNaN(duration) || isNaN(growth)) {
-            alert('Por favor ingresa valores válidos');
-            return;
-        }
-        
-        applyBcgSimulation(strategy, investment, duration, growth);
-        bootstrap.Modal.getInstance(document.getElementById('strategyModal')).hide();
-    };
-    
-    // Mostrar modal
-    const modal = new bootstrap.Modal(document.getElementById('strategyModal'));
-    modal.show();
-}
-
-// Aplicar simulación BCG
-function applyBcgSimulation(strategy, investment, duration, growth) {
-    // En una implementación real, esto actualizaría los datos financieros
-    // Aquí solo mostramos una notificación
-    showNotification(`Simulación aplicada a ${strategy.businessUnit} con una inversión de $${investment.toLocaleString()}`, 'success');
-    
-    // Actualizar KPIs (simulado)
-    updateKPIs();
-}
-
-// Eliminar estrategia BCG
-function removeBcgStrategy(strategyId) {
-    if (confirm('¿Estás seguro de que deseas eliminar esta estrategia?')) {
-        bcgStrategies = bcgStrategies.filter(s => s.id !== strategyId);
-        updateBcgStrategiesList();
-        showNotification('Estrategia eliminada', 'info');
-    }
-}
-
 // Generar estrategias sugeridas BCG
 function generateBcgStrategies() {
     const listContainer = document.getElementById('bcg-strategies-list');
+    listContainer.innerHTML = '';
     
-    // Estrategias basadas en la posición en la matriz BCG
     const suggestedStrategies = [
         {
             title: "Invertir en Estrellas",
             description: "Las unidades en este cuadrante requieren inversión para mantener su crecimiento y liderazgo.",
-            quadrant: "stars"
+            quadrant: "stars",
+            type: "investment"
         },
         {
             title: "Evaluar Incógnitas",
             description: "Determine si vale la pena invertir para convertir estas unidades en estrellas o eliminarlas.",
-            quadrant: "question-marks"
+            quadrant: "question-marks",
+            type: "analysis"
         },
         {
             title: "Cosechar Vacas",
             description: "Estas unidades generan efectivo que puede usarse para invertir en estrellas e incógnitas prometedoras.",
-            quadrant: "cash-cows"
+            quadrant: "cash-cows",
+            type: "harvest"
         },
         {
             title: "Minimizar Perros",
             description: "Considere eliminar o reducir inversión en estas unidades a menos que tengan valor estratégico.",
-            quadrant: "dogs"
+            quadrant: "dogs",
+            type: "divest"
         }
     ];
     
@@ -347,11 +271,9 @@ function generateBcgStrategies() {
             <p>${strategy.description}</p>
             <div class="strategy-impact">
                 <span>Cuadrante: ${strategy.quadrant}</span>
+                <span>Tipo: ${strategy.type}</span>
             </div>
         `;
-        strategyCard.addEventListener('click', function() {
-            showStrategyDetails(strategy);
-        });
         listContainer.appendChild(strategyCard);
     });
 }

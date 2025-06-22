@@ -43,5 +43,23 @@
         "description": "Transferencias salientes a través de un banco sponsor",
         "annualRevenue": 0,
         "annualTransactions": 0
+    },
+    {
+        "id": "qr_credito",
+        "name": "QR Crédito + Transferencias 3.0",
+        "businessUnit": "Digital Payments",
+        "category": "emerging",
+        "description": "Solución de pagos QR con tarjetas de crédito",
+        "annualRevenue": 0,
+        "annualTransactions": 0
+    },
+    {
+        "id": "prevencion_fraude",
+        "name": "Prevención del Fraude",
+        "businessUnit": "Risk Management",
+        "category": "support",
+        "description": "Sistemas avanzados de prevención de fraude",
+        "annualRevenue": 0,
+        "annualTransactions": 0
     }
 ]

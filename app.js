@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Configurar eventos globales
     setupGlobalEvents();
+    
+    // Inicializar tooltips
+    initTooltips();
 });
 
 function initTabs() {
@@ -39,7 +42,8 @@ function loadInitialData() {
         .then(data => {
             window.clientsData = data;
             console.log('Clientes cargados:', data);
-        });
+        })
+        .catch(error => console.error('Error cargando clientes:', error));
     
     fetch('products.json')
         .then(response => response.json())
@@ -47,14 +51,28 @@ function loadInitialData() {
             window.productsData = data;
             console.log('Productos cargados:', data);
             initializeFinancials();
-        });
+        })
+        .catch(error => console.error('Error cargando productos:', error));
     
     fetch('strategies.json')
         .then(response => response.json())
         .then(data => {
             window.strategiesData = data;
             console.log('Estrategias cargadas:', data);
-        });
+            initializeStrategies();
+        })
+        .catch(error => console.error('Error cargando estrategias:', error));
+}
+
+function initializeStrategies() {
+    if (window.strategiesModuleInitialized) return;
+    
+    // Inicializar módulos que dependen de estrategias
+    if (typeof initStrategiesModule === 'function') {
+        initStrategiesModule();
+    }
+    
+    window.strategiesModuleInitialized = true;
 }
 
 function setupGlobalEvents() {
@@ -63,6 +81,9 @@ function setupGlobalEvents() {
     
     // Evento para el botón de cálculo automático
     document.getElementById('auto-calculate').addEventListener('click', autoCalculateFinancials);
+    
+    // Evento para actualizar dashboard
+    document.getElementById('refresh-dashboard').addEventListener('click', refreshDashboard);
 }
 
 function resetFinancials() {
@@ -72,7 +93,6 @@ function resetFinancials() {
 }
 
 function autoCalculateFinancials() {
-    // Lógica para calcular automáticamente los valores financieros basados en los productos
     if (window.productsData && window.clientsData) {
         calculateAutomaticFinancials();
     } else {
@@ -80,7 +100,12 @@ function autoCalculateFinancials() {
     }
 }
 
-// Función para mostrar notificaciones
+function refreshDashboard() {
+    if (window.strategiesData) {
+        renderIntegratedDashboard();
+    }
+}
+
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
@@ -93,7 +118,6 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
-// Inicializar tooltips
 function initTooltips() {
     const tooltips = document.querySelectorAll('[data-tooltip]');
     tooltips.forEach(tooltip => {
@@ -119,3 +143,76 @@ function initTooltips() {
         });
     });
 }
+
+// Nueva función para renderizar dashboard integrado
+function renderIntegratedDashboard() {
+    if (!window.strategiesData) return;
+    
+    const dashboard = document.getElementById('strategy-dashboard');
+    
+    // Agrupar estrategias por fuente y unidad de negocio
+    const strategiesBySource = window.strategiesData.reduce((acc, strategy) => {
+        if (!acc[strategy.source]) acc[strategy.source] = {};
+        if (!acc[strategy.source][strategy.businessUnit]) {
+            acc[strategy.source][strategy.businessUnit] = [];
+        }
+        acc[strategy.source][strategy.businessUnit].push(strategy);
+        return acc;
+    }, {});
+    
+    // Renderizar secciones
+    dashboard.innerHTML = '';
+    
+    for (const [source, units] of Object.entries(strategiesBySource)) {
+        const sourceSection = document.createElement('div');
+        sourceSection.className = 'dashboard-section';
+        sourceSection.innerHTML = `<h3><i class="fas ${getSourceIcon(source)}"></i> ${source.toUpperCase()} Strategies</h3>`;
+        
+        for (const [unit, strategies] of Object.entries(units)) {
+            const unitCard = document.createElement('div');
+            unitCard.className = 'unit-card';
+            unitCard.innerHTML = `
+                <h4>${unit}</h4>
+                <div class="strategies-container">
+                    ${strategies.map(strategy => renderStrategyCard(strategy)).join('')}
+                </div>
+            `;
+            sourceSection.appendChild(unitCard);
+        }
+        
+        dashboard.appendChild(sourceSection);
+    }
+}
+
+function getSourceIcon(source) {
+    const icons = {
+        bcg: 'fa-chart-pie',
+        pestel: 'fa-globe-americas',
+        porter: 'fa-chess-board'
+    };
+    return icons[source.toLowerCase()] || 'fa-lightbulb';
+}
+
+function renderStrategyCard(strategy) {
+    return `
+        <div class="strategy-card" data-id="${strategy.id}">
+            <h5>${strategy.title}</h5>
+            <p>${strategy.description}</p>
+            <div class="strategy-meta">
+                <span><i class="fas fa-money-bill-wave"></i> +${strategy.impact.revenue}% ingresos</span>
+                <span><i class="fas fa-exchange-alt"></i> +${strategy.impact.transactions}% transacciones</span>
+            </div>
+            <div class="strategy-actions">
+                <button class="btn btn-sm btn-primary" onclick="simulateStrategy('${strategy.id}')">Simular</button>
+            </div>
+        </div>
+    `;
+}
+
+// Exponer funciones globalmente para uso en HTML
+window.simulateStrategy = function(strategyId) {
+    const strategy = window.strategiesData.find(s => s.id === strategyId);
+    if (strategy) {
+        showStrategyDetails(strategy);
+    }
+};
