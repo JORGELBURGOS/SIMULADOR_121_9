@@ -3,59 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Estratégico de Pagos Digitales</title>
+    <title>NewPay - Simulador Estratégico</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
-            --dark-color: #2c3e50;
-            --success-color: #2ecc71;
-            --warning-color: #f39c12;
-            --danger-color: #e74c3c;
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
         }
         
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #f5f7fa;
-            color: var(--dark-color);
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
+            background-color: #f8f9fa;
+            color: var(--dark);
         }
         
         .sidebar {
-            background-color: var(--primary-color);
+            background-color: var(--primary);
             color: white;
             height: 100vh;
             position: fixed;
+            width: 250px;
             padding-top: 20px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        }
-        
-        .sidebar .nav-link {
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 5px;
-            border-radius: 5px;
-            padding: 10px 15px;
-            transition: all 0.3s;
-        }
-        
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            background-color: rgba(255,255,255,0.1);
-            color: white;
-        }
-        
-        .sidebar .nav-link i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
         }
         
         .main-content {
@@ -63,211 +38,57 @@
             padding: 20px;
         }
         
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            transition: transform 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .card-header {
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 10px 10px 0 0 !important;
-            font-weight: 600;
-        }
-        
-        .btn-primary {
-            background-color: var(--secondary-color);
-            border: none;
-            padding: 8px 20px;
-            font-weight: 500;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-        
-        .btn-outline-primary {
-            color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-        
-        .btn-outline-primary:hover {
-            background-color: var(--secondary-color);
-            color: white;
-        }
-        
-        .kpi-card {
-            text-align: center;
-            padding: 15px;
-            border-radius: 10px;
-            color: white;
-        }
-        
-        .kpi-card .value {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        
-        .kpi-card .label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-        
-        .kpi-ebitda {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-        }
-        
-        .kpi-roi {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-        }
-        
-        .kpi-cost {
-            background: linear-gradient(135deg, #f39c12, #e67e22);
-        }
-        
-        .kpi-nps {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-        }
-        
-        .table th {
-            background-color: var(--light-color);
-            font-weight: 600;
-        }
-        
-        .radar-chart-container, .matrix-container {
-            height: 400px;
-            position: relative;
-        }
-        
-        .product-badge {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-right: 5px;
+        .nav-link {
+            color: rgba(255,255,255,0.8);
             margin-bottom: 5px;
-            display: inline-block;
-        }
-        
-        .badge-digital {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        .badge-instant {
-            background-color: #e74c3c;
-            color: white;
-        }
-        
-        .strategy-card {
-            border-left: 4px solid var(--secondary-color);
+            border-radius: 5px;
+            padding: 10px 15px;
             transition: all 0.3s;
         }
         
-        .strategy-card:hover {
-            transform: translateX(5px);
-        }
-        
-        .impact-high {
-            color: var(--danger-color);
-            font-weight: 600;
-        }
-        
-        .impact-medium {
-            color: var(--warning-color);
-            font-weight: 600;
-        }
-        
-        .impact-low {
-            color: var(--success-color);
-            font-weight: 600;
-        }
-        
-        .star {
-            color: var(--warning-color);
-        }
-        
-        .cow {
-            color: var(--success-color);
-        }
-        
-        .question {
-            color: var(--secondary-color);
-        }
-        
-        .dog {
-            color: var(--danger-color);
-        }
-        
-        .tabs-custom .nav-link {
-            color: var(--dark-color);
-            font-weight: 500;
-            border: none;
-            padding: 10px 20px;
-        }
-        
-        .tabs-custom .nav-link.active {
-            color: var(--secondary-color);
-            border-bottom: 3px solid var(--secondary-color);
-            background: transparent;
-        }
-        
-        .progress {
-            height: 10px;
-            border-radius: 5px;
-        }
-        
-        .progress-bar {
-            background-color: var(--secondary-color);
-        }
-        
-        .form-control, .form-select {
-            border-radius: 5px;
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-        }
-        
-        .logo {
-            height: 50px;
-            width: auto;
-            max-width: 120%;
-        }
-        
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: var(--accent-color);
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
             color: white;
-            border-radius: 50%;
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
             width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
+            text-align: center;
         }
         
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
+        .kpi-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            margin-bottom: 1.5rem;
         }
         
-        /* Estilos para la matriz BCG */
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+        .trend-neutral { color: var(--warning); }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        
         .bcg-matrix {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -284,10 +105,10 @@
             position: relative;
         }
         
-        #stars { border-color: var(--warning-color); }
-        #question-marks { border-color: var(--secondary-color); }
-        #cash-cows { border-color: var(--success-color); }
-        #dogs { border-color: var(--danger-color); }
+        #stars { border-color: var(--warning); }
+        #question-marks { border-color: var(--secondary); }
+        #cash-cows { border-color: var(--success); }
+        #dogs { border-color: var(--danger); }
         
         .bcg-item {
             background: white;
@@ -329,9 +150,9 @@
 <body>
     <div class="d-flex">
         <!-- Sidebar -->
-        <div class="sidebar d-flex flex-column flex-shrink-0 p-3" style="width: 250px;">
+        <div class="sidebar d-flex flex-column flex-shrink-0 p-3">
             <div class="d-flex justify-content-center mb-4">
-                <img src="newpay-logo.png" alt="Newpay Logo" class="logo">
+                <img src="newpay-logo.png" alt="NewPay Logo" height="50">
             </div>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
@@ -342,39 +163,33 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link" id="pl-tab">
-                        <i class="fas fa-chart-line"></i>
-                        P&L Dinámico
+                    <a href="#" class="nav-link" id="financials-tab">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        P&L
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link" id="entorno-tab">
+                    <a href="#" class="nav-link" id="pestel-tab">
                         <i class="fas fa-globe-americas"></i>
-                        Análisis PESTEL
+                        PESTEL
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link" id="competitivo-tab">
+                    <a href="#" class="nav-link" id="porter-tab">
                         <i class="fas fa-chess-board"></i>
-                        Análisis Porter
+                        Porter
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link" id="crecimiento-tab">
+                    <a href="#" class="nav-link" id="bcg-tab">
                         <i class="fas fa-chart-pie"></i>
-                        Matriz BCG
+                        BCG
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link" id="estrategias-tab">
+                    <a href="#" class="nav-link" id="strategies-tab">
                         <i class="fas fa-chess-knight"></i>
-                        Simulador de Estrategias
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link" id="kpis-tab">
-                        <i class="fas fa-chart-bar"></i>
-                        KPIs y Métricas
+                        Estrategias
                     </a>
                 </li>
             </ul>
@@ -382,390 +197,94 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <!-- Dashboard Content -->
+            <!-- Dashboard -->
             <div id="dashboard-content">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Dashboard</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group me-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Compartir</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Exportar</button>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-outline-primary">
+                        <button class="btn btn-sm btn-outline-secondary me-2">
                             <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-question-circle"></i> Ayuda
                         </button>
                     </div>
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-md-3">
-                        <div class="kpi-card kpi-ebitda">
-                            <div class="value">$4.2M</div>
-                            <div class="label">EBITDA</div>
-                            <div class="mt-2"><span class="badge bg-light text-success">+12% vs Budget</span></div>
+                        <div class="kpi-card">
+                            <h3 class="h5">EBITDA</h3>
+                            <div class="kpi-value">$4.2M</div>
+                            <div class="text-success trend-up">
+                                <i class="fas fa-arrow-up"></i> 12% vs Budget
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="kpi-card kpi-roi">
-                            <div class="value">24%</div>
-                            <div class="label">ROI</div>
-                            <div class="mt-2"><span class="badge bg-light text-success">+5% YoY</span></div>
+                        <div class="kpi-card">
+                            <h3 class="h5">ROI</h3>
+                            <div class="kpi-value">24%</div>
+                            <div class="text-success trend-up">
+                                <i class="fas fa-arrow-up"></i> 5% YoY
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="kpi-card kpi-cost">
-                            <div class="value">$0.38</div>
-                            <div class="label">Costo por transacción</div>
-                            <div class="mt-2"><span class="badge bg-light text-danger">+8% vs Budget</span></div>
+                        <div class="kpi-card">
+                            <h3 class="h5">Transacciones</h3>
+                            <div class="kpi-value">28.5M</div>
+                            <div class="text-success trend-up">
+                                <i class="fas fa-arrow-up"></i> 8% vs Año anterior
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="kpi-card kpi-nps">
-                            <div class="value">68</div>
-                            <div class="label">NPS</div>
-                            <div class="mt-2"><span class="badge bg-light text-success">+15 vs Last YTD</span></div>
+                        <div class="kpi-card">
+                            <h3 class="h5">NPS</h3>
+                            <div class="kpi-value">68</div>
+                            <div class="text-warning trend-neutral">
+                                <i class="fas fa-equals"></i> 0% vs Mes anterior
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <span>Resumen Financiero</span>
-                                <div>
-                                    <button class="btn btn-sm btn-outline-light">Anual</button>
-                                    <button class="btn btn-sm btn-outline-light active">Mensual</button>
-                                    <button class="btn btn-sm btn-outline-light">Trimestral</button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="financialChart" height="300"></canvas>
-                            </div>
+                        <div class="chart-container">
+                            <h3 class="h5">Evolución Financiera</h3>
+                            <canvas id="financialChart" height="300"></canvas>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header">
-                                Distribución por Unidad de Negocio
-                            </div>
-                            <div class="card-body">
-                                <canvas id="businessUnitChart" height="300"></canvas>
-                                <div class="mt-3 text-center">
-                                    <span class="badge-digital product-badge me-2"><i class="fas fa-mobile-alt"></i> Digital Payments</span>
-                                    <span class="badge-instant product-badge"><i class="fas fa-bolt"></i> Instant Payments</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                Top Clientes por Transacciones
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Cliente</th>
-                                                <th>Transacciones</th>
-                                                <th>Revenue</th>
-                                                <th>% Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><i class="fas fa-building me-2"></i> Mercado Pago</td>
-                                                <td>12.4M</td>
-                                                <td>$3.2M</td>
-                                                <td>
-                                                    <div class="progress">
-                                                        <div class="progress-bar" style="width: 32%"></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><i class="fas fa-university me-2"></i> Banco Galicia</td>
-                                                <td>8.7M</td>
-                                                <td>$2.1M</td>
-                                                <td>
-                                                    <div class="progress">
-                                                        <div class="progress-bar" style="width: 21%"></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><i class="fas fa-credit-card me-2"></i> Ualá</td>
-                                                <td>6.2M</td>
-                                                <td>$1.5M</td>
-                                                <td>
-                                                    <div class="progress">
-                                                        <div class="progress-bar" style="width: 15%"></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><i class="fas fa-building me-2"></i> Santander</td>
-                                                <td>5.8M</td>
-                                                <td>$1.4M</td>
-                                                <td>
-                                                    <div class="progress">
-                                                        <div class="progress-bar" style="width: 14%"></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><i class="fas fa-mobile-alt me-2"></i> Personal Pay</td>
-                                                <td>4.1M</td>
-                                                <td>$1.0M</td>
-                                                <td>
-                                                    <div class="progress">
-                                                        <div class="progress-bar" style="width: 10%"></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <span>Alertas y Recomendaciones</span>
-                                <span class="badge bg-danger">3 nuevas</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="alert alert-warning d-flex align-items-center">
-                                    <i class="fas fa-exclamation-triangle me-3 fa-2x"></i>
-                                    <div>
-                                        <strong>Costos operativos aumentaron 8%</strong>
-                                        <div class="small">Revisar estrategias de eficiencia en Digital Payments</div>
-                                    </div>
-                                </div>
-                                <div class="alert alert-info d-flex align-items-center mt-3">
-                                    <i class="fas fa-lightbulb me-3 fa-2x"></i>
-                                    <div>
-                                        <strong>Oportunidad en QR Crédito</strong>
-                                        <div class="small">Basado en análisis de entorno, sugerimos evaluar incorporación</div>
-                                    </div>
-                                </div>
-                                <div class="alert alert-danger d-flex align-items-center mt-3">
-                                    <i class="fas fa-fire me-3 fa-2x"></i>
-                                    <div>
-                                        <strong>Alto impacto regulatorio detectado</strong>
-                                        <div class="small">Nuevas normativas podrían afectar Transferencias 3.0</div>
-                                    </div>
-                                </div>
-                                <div class="alert alert-success d-flex align-items-center mt-3">
-                                    <i class="fas fa-rocket me-3 fa-2x"></i>
-                                    <div>
-                                        <strong>Estrategia exitosa: PCT</strong>
-                                        <div class="small">ROI de 35% en últimos 3 meses</div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="chart-container">
+                            <h3 class="h5">Distribución por Unidad</h3>
+                            <canvas id="businessUnitChart" height="300"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- P&L Content -->
-            <div id="pl-content" class="d-none">
+            <!-- PESTEL -->
+            <div id="pestel-content" class="d-none">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">P&L Dinámico</h1>
+                    <h1 class="h2"><i class="fas fa-globe-americas me-2"></i>Análisis PESTEL</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group me-2">
-                            <button class="btn btn-sm btn-outline-secondary">Exportar</button>
-                            <button class="btn btn-sm btn-outline-secondary">Imprimir</button>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-calendar-alt"></i> 2023
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">2023</a></li>
-                                <li><a class="dropdown-item" href="#">2022</a></li>
-                                <li><a class="dropdown-item" href="#">2021</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header">
-                                Resumen Anual
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Concepto</th>
-                                                <th>Enero</th>
-                                                <th>Febrero</th>
-                                                <th>Marzo</th>
-                                                <th>Q1 Total</th>
-                                                <th>% Var. YoY</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Revenue Bruto</strong></td>
-                                                <td>$1,450,200</td>
-                                                <td>$1,520,500</td>
-                                                <td>$1,610,800</td>
-                                                <td>$4,581,500</td>
-                                                <td class="text-success">+15%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Costos Operativos</td>
-                                                <td>$620,100</td>
-                                                <td>$650,300</td>
-                                                <td>$690,500</td>
-                                                <td>$1,960,900</td>
-                                                <td class="text-danger">+8%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Gastos Generales</td>
-                                                <td>$210,400</td>
-                                                <td>$215,600</td>
-                                                <td>$220,800</td>
-                                                <td>$646,800</td>
-                                                <td class="text-success">+3%</td>
-                                            </tr>
-                                            <tr class="table-active">
-                                                <td><strong>EBITDA</strong></td>
-                                                <td>$619,700</td>
-                                                <td>$654,600</td>
-                                                <td>$699,500</td>
-                                                <td>$1,973,800</td>
-                                                <td class="text-success">+22%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Margen EBITDA</td>
-                                                <td>42.7%</td>
-                                                <td>43.0%</td>
-                                                <td>43.4%</td>
-                                                <td>43.1%</td>
-                                                <td class="text-success">+2.5pp</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header">
-                                Configuración de Parámetros
-                            </div>
-                            <div class="card-body">
-                                <form id="pl-settings-form">
-                                    <div class="mb-3">
-                                        <label for="costos-operativos" class="form-label">% Costos Operativos</label>
-                                        <input type="range" class="form-range" min="20" max="50" step="0.5" id="costos-operativos" value="32.5">
-                                        <div class="d-flex justify-content-between">
-                                            <small>20%</small>
-                                            <small><strong id="costos-operativos-value">32.5%</strong></small>
-                                            <small>50%</small>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="gastos-generales" class="form-label">% Gastos Generales</label>
-                                        <input type="range" class="form-range" min="5" max="25" step="0.5" id="gastos-generales" value="14.2">
-                                        <div class="d-flex justify-content-between">
-                                            <small>5%</small>
-                                            <small><strong id="gastos-generales-value">14.2%</strong></small>
-                                            <small>25%</small>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Ajuste Automático</label>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="ajuste-automatico" checked>
-                                            <label class="form-check-label" for="ajuste-automatico">Optimizar valores basado en histórico</label>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">Aplicar Cambios</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                Revenue por Unidad de Negocio
-                            </div>
-                            <div class="card-body">
-                                <canvas id="revenueByUnitChart" height="250"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                Transacciones por Producto
-                            </div>
-                            <div class="card-body">
-                                <ul class="nav nav-tabs tabs-custom mb-3" id="transactionTabs" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="digital-tab" data-bs-toggle="tab" data-bs-target="#digital" type="button" role="tab">Digital Payments</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="instant-tab" data-bs-toggle="tab" data-bs-target="#instant" type="button" role="tab">Instant Payments</button>
-                                    </li>
-                                </ul>
-                                <div class="tab-content" id="transactionTabsContent">
-                                    <div class="tab-pane fade show active" id="digital" role="tabpanel">
-                                        <canvas id="digitalTransactionsChart" height="200"></canvas>
-                                    </div>
-                                    <div class="tab-pane fade" id="instant" role="tabpanel">
-                                        <canvas id="instantTransactionsChart" height="200"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PESTEL Content -->
-            <div id="entorno-content" class="d-none">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Análisis PESTEL</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <button class="btn btn-sm btn-outline-primary me-2" id="add-entorno-variable">
-                            <i class="fas fa-plus"></i> Nueva Variable
+                        <button class="btn btn-sm btn-outline-primary me-2" id="addPestelVariable">
+                            <i class="fas fa-plus"></i> Agregar Variable
                         </button>
                         <button class="btn btn-sm btn-outline-secondary">
                             <i class="fas fa-history"></i> Histórico
                         </button>
                     </div>
                 </div>
-
+                
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header">
-                                Radar de Impacto PESTEL
-                            </div>
-                            <div class="card-body">
-                                <div class="radar-chart-container">
-                                    <canvas id="entornoRadarChart"></canvas>
-                                </div>
-                            </div>
+                        <div class="chart-container">
+                            <h3 class="h5">Impacto de Factores Externos</h3>
+                            <canvas id="pestelRadarChart" height="400"></canvas>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -774,84 +293,64 @@
                                 Variables PESTEL
                             </div>
                             <div class="card-body">
-                                <div class="mb-3">
-                                    <label class="form-label">Categoría</label>
-                                    <select class="form-select" id="entorno-categoria">
-                                        <option value="politico">Político</option>
-                                        <option value="economico">Económico</option>
-                                        <option value="social">Social</option>
-                                        <option value="tecnologico">Tecnológico</option>
-                                        <option value="ecologico">Ecológico</option>
-                                        <option value="legal">Legal</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Variable</label>
-                                    <select class="form-select" id="entorno-variable">
-                                        <option value="1">Influencia gubernamental</option>
-                                        <option value="2">Situación política</option>
-                                        <option value="3">Subsidios gubernamentales</option>
-                                        <option value="4">Relaciones bilaterales</option>
-                                        <option value="5">Regulación & Desregulación</option>
-                                    </select>
-                                </div>
+                                <select class="form-select mb-3" id="pestelCategory">
+                                    <option value="political">Político</option>
+                                    <option value="economic">Económico</option>
+                                    <option value="social">Social</option>
+                                    <option value="technological">Tecnológico</option>
+                                    <option value="ecological">Ecológico</option>
+                                    <option value="legal">Legal</option>
+                                </select>
+                                
+                                <select class="form-select mb-3" id="pestelVariable">
+                                    <!-- Se llena dinámicamente -->
+                                </select>
+                                
                                 <div class="mb-3">
                                     <label class="form-label">Impacto (1-5)</label>
-                                    <div class="d-flex align-items-center">
-                                        <input type="range" class="form-range me-3" min="1" max="5" step="1" id="entorno-impacto" value="3">
-                                        <span class="badge bg-secondary" id="impacto-value">3 - Medio</span>
+                                    <input type="range" class="form-range" min="1" max="5" step="1" id="pestelImpact">
+                                    <div class="d-flex justify-content-between">
+                                        <small>Bajo</small>
+                                        <small>Medio</small>
+                                        <small>Alto</small>
                                     </div>
                                 </div>
                                 
-                                <div class="list-group mt-3" id="entorno-variables-list">
-                                    <!-- Las variables se cargarán dinámicamente desde JavaScript -->
-                                </div>
+                                <button class="btn btn-primary w-100" id="addPestelVariable">
+                                    <i class="fas fa-plus-circle me-2"></i>Agregar Variable
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                Estrategias Sugeridas
-                            </div>
-                            <div class="card-body">
-                                <div class="row" id="entorno-strategies-container">
-                                    <!-- Las estrategias se cargarán dinámicamente desde JavaScript -->
-                                </div>
-                            </div>
-                        </div>
+                
+                <div class="mt-4">
+                    <h3 class="h5">Estrategias Sugeridas</h3>
+                    <div class="row" id="pestelStrategiesContainer">
+                        <!-- Se llena dinámicamente -->
                     </div>
                 </div>
             </div>
 
-            <!-- Porter Content -->
-            <div id="competitivo-content" class="d-none">
+            <!-- Porter -->
+            <div id="porter-content" class="d-none">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Análisis de Porter</h1>
+                    <h1 class="h2"><i class="fas fa-chess-board me-2"></i>Análisis de Porter</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <button class="btn btn-sm btn-outline-primary me-2" id="add-competitivo-variable">
-                            <i class="fas fa-plus"></i> Nueva Variable
+                        <button class="btn btn-sm btn-outline-primary me-2" id="addPorterVariable">
+                            <i class="fas fa-plus"></i> Agregar Variable
                         </button>
                         <button class="btn btn-sm btn-outline-secondary">
                             <i class="fas fa-history"></i> Histórico
                         </button>
                     </div>
                 </div>
-
+                
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header">
-                                Radar de Fuerzas Competitivas
-                            </div>
-                            <div class="card-body">
-                                <div class="radar-chart-container">
-                                    <canvas id="competitivoRadarChart"></canvas>
-                                </div>
-                            </div>
+                        <div class="chart-container">
+                            <h3 class="h5">Fuerzas Competitivas</h3>
+                            <canvas id="porterRadarChart" height="400"></canvas>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -860,110 +359,86 @@
                                 Variables de Porter
                             </div>
                             <div class="card-body">
-                                <div class="mb-3">
-                                    <label class="form-label">Fuerza Competitiva</label>
-                                    <select class="form-select" id="competitivo-fuerza">
-                                        <option value="competencia">Competencia actual</option>
-                                        <option value="nuevos">Amenaza nuevos entrantes</option>
-                                        <option value="sustitutos">Productos sustitutos</option>
-                                        <option value="proveedores">Poder de proveedores</option>
-                                        <option value="clientes">Poder de clientes</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Variable</label>
-                                    <select class="form-select" id="competitivo-variable">
-                                        <option value="1">La regulación en el sector financiero</option>
-                                        <option value="2">Bancos socios Dueños Coelsa</option>
-                                        <option value="3">Negociacion de Precios Coelsa</option>
-                                        <option value="4">Meli volumen</option>
-                                        <option value="5">Crypto</option>
-                                    </select>
-                                </div>
+                                <select class="form-select mb-3" id="porterForce">
+                                    <option value="current_competition">Competencia Actual</option>
+                                    <option value="new_entrants">Nuevos Entrantes</option>
+                                    <option value="substitutes">Sustitutos</option>
+                                    <option value="supplier_power">Proveedores</option>
+                                    <option value="buyer_power">Clientes</option>
+                                </select>
+                                
+                                <select class="form-select mb-3" id="porterVariable">
+                                    <!-- Se llena dinámicamente -->
+                                </select>
+                                
                                 <div class="mb-3">
                                     <label class="form-label">Intensidad (1-5)</label>
-                                    <div class="d-flex align-items-center">
-                                        <input type="range" class="form-range me-3" min="1" max="5" step="1" id="competitivo-intensidad" value="3">
-                                        <span class="badge bg-secondary" id="intensidad-value">3 - Media</span>
+                                    <input type="range" class="form-range" min="1" max="5" step="1" id="porterIntensity">
+                                    <div class="d-flex justify-content-between">
+                                        <small>Baja</small>
+                                        <small>Media</small>
+                                        <small>Alta</small>
                                     </div>
                                 </div>
                                 
-                                <div class="list-group mt-3" id="competitivo-variables-list">
-                                    <!-- Las variables se cargarán dinámicamente desde JavaScript -->
-                                </div>
+                                <button class="btn btn-primary w-100" id="addPorterVariable">
+                                    <i class="fas fa-plus-circle me-2"></i>Agregar Variable
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                Estrategias Competitivas Sugeridas
-                            </div>
-                            <div class="card-body">
-                                <div class="row" id="competitivo-strategies-container">
-                                    <!-- Las estrategias se cargarán dinámicamente desde JavaScript -->
-                                </div>
-                            </div>
-                        </div>
+                
+                <div class="mt-4">
+                    <h3 class="h5">Estrategias Competitivas</h3>
+                    <div class="row" id="porterStrategiesContainer">
+                        <!-- Se llena dinámicamente -->
                     </div>
                 </div>
             </div>
 
-            <!-- BCG Content -->
-            <div id="crecimiento-content" class="d-none">
+            <!-- BCG -->
+            <div id="bcg-content" class="d-none">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Matriz BCG</h1>
+                    <h1 class="h2"><i class="fas fa-chart-pie me-2"></i>Matriz BCG</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <button class="btn btn-sm btn-outline-secondary me-2">
-                            <i class="fas fa-download"></i> Exportar
-                        </button>
-                        <button class="btn btn-sm btn-outline-primary" id="suggest-growth-strategies">
-                            <i class="fas fa-magic"></i> Sugerir Estrategias
+                        <button class="btn btn-sm btn-outline-primary" id="applyBcgStrategy">
+                            <i class="fas fa-check-circle"></i> Aplicar Estrategia
                         </button>
                     </div>
                 </div>
-
+                
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header">
-                                Matriz BCG - Productos y Servicios
+                        <div class="bcg-matrix">
+                            <div class="bcg-quadrant" id="stars">
+                                <h4><i class="fas fa-star text-warning me-2"></i>Estrellas</h4>
+                                <div class="d-flex flex-wrap" id="starsItems">
+                                    <div class="bcg-item">PSP Cash</div>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <div class="bcg-matrix">
-                                    <div class="bcg-quadrant" id="stars">
-                                        <h4><i class="fas fa-star star me-2"></i>Estrellas</h4>
-                                        <div class="d-flex flex-wrap" id="starsItems">
-                                            <div class="bcg-item">PSP Cash</div>
-                                        </div>
-                                    </div>
-                                    <div class="bcg-quadrant" id="question-marks">
-                                        <h4><i class="fas fa-question question me-2"></i>Incógnitas</h4>
-                                        <div class="d-flex flex-wrap" id="questionMarksItems">
-                                            <div class="bcg-item">Remesas</div>
-                                            <div class="bcg-item">Pull</div>
-                                            <div class="bcg-item">PCT</div>
-                                            <div class="bcg-item">Cripto</div>
-                                        </div>
-                                    </div>
-                                    <div class="bcg-quadrant" id="cash-cows">
-                                        <h4><i class="fas fa-coins cow me-2"></i>Vacas</h4>
-                                        <div class="d-flex flex-wrap" id="cashCowsItems">
-                                            <div class="bcg-item">Push</div>
-                                            <div class="bcg-item">Debin</div>
-                                            <div class="bcg-item">Anti-Fraude</div>
-                                        </div>
-                                    </div>
-                                    <div class="bcg-quadrant" id="dogs">
-                                        <h4><i class="fas fa-dog dog me-2"></i>Perros</h4>
-                                        <div class="d-flex flex-wrap" id="dogsItems">
-                                            <div class="bcg-item">Extracción</div>
-                                            <div class="bcg-item">Visa Direct</div>
-                                        </div>
-                                    </div>
+                            <div class="bcg-quadrant" id="question-marks">
+                                <h4><i class="fas fa-question text-secondary me-2"></i>Incógnitas</h4>
+                                <div class="d-flex flex-wrap" id="questionMarksItems">
+                                    <div class="bcg-item">Remesas</div>
+                                    <div class="bcg-item">Pull</div>
+                                    <div class="bcg-item">PCT</div>
+                                    <div class="bcg-item">Cripto</div>
+                                </div>
+                            </div>
+                            <div class="bcg-quadrant" id="cash-cows">
+                                <h4><i class="fas fa-coins text-success me-2"></i>Vacas</h4>
+                                <div class="d-flex flex-wrap" id="cashCowsItems">
+                                    <div class="bcg-item">Push</div>
+                                    <div class="bcg-item">Debin</div>
+                                    <div class="bcg-item">Anti-Fraude</div>
+                                </div>
+                            </div>
+                            <div class="bcg-quadrant" id="dogs">
+                                <h4><i class="fas fa-dog text-muted me-2"></i>Perros</h4>
+                                <div class="d-flex flex-wrap" id="dogsItems">
+                                    <div class="bcg-item">Extracción</div>
+                                    <div class="bcg-item">Visa Direct</div>
                                 </div>
                             </div>
                         </div>
@@ -974,463 +449,46 @@
                                 Configuración BCG
                             </div>
                             <div class="card-body">
-                                <form id="bcg-form">
-                                    <div class="mb-3">
-                                        <label class="form-label">Unidad de Negocio</label>
-                                        <select class="form-select" id="bcg-unidad">
-                                            <option value="Digital Payments">Digital Payments</option>
-                                            <option value="Instant Payments">Instant Payments</option>
-                                            <option value="QR Crédito">QR Crédito</option>
-                                            <option value="Prevención de Fraude">Prevención de Fraude</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">% Crecimiento Mercado</label>
-                                        <input type="number" class="form-control" id="bcg-crecimiento" value="15" min="0" max="100" step="0.1">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">% Participación (Penetración)</label>
-                                        <input type="number" class="form-control" id="bcg-participacion" value="25" min="0" max="100" step="0.1">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Estrategia de Crecimiento</label>
-                                        <select class="form-select" id="bcg-estrategia">
-                                            <option value="penetracion">Penetración de Mercado</option>
-                                            <option value="desarrollo">Desarrollo de Producto</option>
-                                            <option value="expansion">Expansión de Mercado</option>
-                                            <option value="diversificacion">Diversificación</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">Actualizar</button>
-                                </form>
+                                <div class="mb-3">
+                                    <label class="form-label">Unidad de Negocio</label>
+                                    <select class="form-select" id="bcgBusinessUnit">
+                                        <option value="Digital Payments">Digital Payments</option>
+                                        <option value="Instant Payments">Instant Payments</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Estrategia</label>
+                                    <select class="form-select" id="bcgStrategy">
+                                        <option value="penetration">Penetración de Mercado</option>
+                                        <option value="development">Desarrollo de Producto</option>
+                                        <option value="expansion">Expansión de Mercado</option>
+                                        <option value="diversification">Diversificación</option>
+                                    </select>
+                                </div>
+                                
+                                <button class="btn btn-primary w-100" id="applyBcgStrategy">
+                                    <i class="fas fa-check-circle me-2"></i>Aplicar Estrategia
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                Estrategias BCG Sugeridas
-                            </div>
-                            <div class="card-body">
-                                <div class="row" id="growth-strategies-container">
-                                    <!-- Las estrategias se cargarán dinámicamente desde JavaScript -->
-                                </div>
-                            </div>
-                        </div>
+                
+                <div class="mt-4">
+                    <h3 class="h5">Estrategias BCG</h3>
+                    <div class="row" id="bcgStrategiesContainer">
+                        <!-- Se llena dinámicamente -->
                     </div>
                 </div>
             </div>
 
-            <!-- Simulador de Estrategias Content -->
-            <div id="estrategias-content" class="d-none">
+            <!-- Estrategias -->
+            <div id="strategies-content" class="d-none">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Simulador de Estrategias</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <button class="btn btn-sm btn-outline-secondary me-2">
-                            <i class="fas fa-history"></i> Histórico
-                        </button>
-                        <button class="btn btn-sm btn-outline-primary" id="new-strategy-btn">
-                            <i class="fas fa-plus"></i> Nueva Simulación
-                        </button>
-                    </div>
+                    <h1 class="h2"><i class="fas fa-chess-knight me-2"></i>Estrategias</h1>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header">
-                                Impacto Estimado en P&L
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Estrategia</th>
-                                                <th>Ingresos</th>
-                                                <th>Costos</th>
-                                                <th>EBITDA</th>
-                                                <th>ROI</th>
-                                                <th>Horizonte</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="estrategias-impact-table">
-                                            <!-- Las estrategias se cargarán dinámicamente desde JavaScript -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header">
-                                Configurar Nueva Estrategia
-                            </div>
-                            <div class="card-body">
-                                <form id="estrategia-form">
-                                    <div class="mb-3">
-                                        <label class="form-label">Estrategia</label>
-                                        <select class="form-select" id="estrategia-tipo">
-                                            <option value="">Seleccionar estrategia...</option>
-                                            <option value="penetracion">Penetración de Mercado</option>
-                                            <option value="desarrollo">Desarrollo de Producto</option>
-                                            <option value="expansion">Expansión de Mercado</option>
-                                            <option value="diversificacion">Diversificación</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Unidad de Negocio</label>
-                                        <select class="form-select" id="estrategia-unidad">
-                                            <option value="Digital Payments">Digital Payments</option>
-                                            <option value="Instant Payments">Instant Payments</option>
-                                            <option value="QR Crédito">QR Crédito</option>
-                                            <option value="Prevención de Fraude">Prevención de Fraude</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Producto/Servicio</label>
-                                        <select class="form-select" id="estrategia-producto">
-                                            <option value="Transferencias Inmediatas Salientes">Transferencias Inmediatas Salientes</option>
-                                            <option value="Debines Salientes">Debines Salientes</option>
-                                            <option value="Pagos con Transferencias (PCT)">Pagos con Transferencias (PCT)</option>
-                                            <option value="Transferencias Entrantes PSPs">Transferencias Entrantes PSPs</option>
-                                            <option value="Transferencias Salientes PSPs">Transferencias Salientes PSPs</option>
-                                            <option value="QR Crédito + Transferencias 3.0">QR Crédito + Transferencias 3.0</option>
-                                            <option value="Prevención del Fraude">Prevención del Fraude</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Inversión Estimada</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">$</span>
-                                            <input type="number" class="form-control" id="estrategia-inversion" placeholder="500,000" min="0" step="1000">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Duración (meses)</label>
-                                        <input type="number" class="form-control" id="estrategia-duracion" placeholder="12" min="1" max="36">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">% Crecimiento Esperado</label>
-                                        <input type="number" class="form-control" id="estrategia-crecimiento" placeholder="15" min="0" max="100" step="0.1">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">Simular Impacto</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                Estrategias Aplicadas
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Estrategia</th>
-                                                <th>Fecha</th>
-                                                <th>Inversión</th>
-                                                <th>ROI Real</th>
-                                                <th>EBITDA Impact</th>
-                                                <th>Estado</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="estrategias-aplicadas-table">
-                                            <!-- Las estrategias aplicadas se cargarán dinámicamente desde JavaScript -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- KPIs y Métricas Content -->
-            <div id="kpis-content" class="d-none">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">KPIs y Métricas</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group me-2">
-                            <button class="btn btn-sm btn-outline-secondary">Mensual</button>
-                            <button class="btn btn-sm btn-outline-secondary active">Trimestral</button>
-                            <button class="btn btn-sm btn-outline-secondary">Anual</button>
-                        </div>
-                        <button class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-download"></i> Exportar
-                        </button>
-                    </div>
-                </div>
-
-                <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                Detalle de Métricas
-                            </div>
-                            <div class="card-body">
-                                <ul class="nav nav-tabs tabs-custom mb-3" id="metricsTabs" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="financial-tab" data-bs-toggle="tab" data-bs-target="#financial" type="button" role="tab">Financieras</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="operational-tab" data-bs-toggle="tab" data-bs-target="#operational" type="button" role="tab">Operacionales</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="customer-tab" data-bs-toggle="tab" data-bs-target="#customer" type="button" role="tab">Clientes</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="strategic-tab" data-bs-toggle="tab" data-bs-target="#strategic" type="button" role="tab">Estratégicas</button>
-                                    </li>
-                                </ul>
-                                <div class="tab-content" id="metricsTabsContent">
-                                    <div class="tab-pane fade show active" id="financial" role="tabpanel">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Métrica</th>
-                                                        <th>Actual</th>
-                                                        <th>Budget</th>
-                                                        <th>Var. %</th>
-                                                        <th>YoY</th>
-                                                        <th>Tendencia</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Revenue Bruto</td>
-                                                        <td>$4.58M</td>
-                                                        <td>$4.35M</td>
-                                                        <td class="text-success">+5.3%</td>
-                                                        <td class="text-success">+15.2%</td>
-                                                        <td><i class="fas fa-arrow-up text-success"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>EBITDA</td>
-                                                        <td>$1.97M</td>
-                                                        <td>$1.82M</td>
-                                                        <td class="text-success">+8.2%</td>
-                                                        <td class="text-success">+22.1%</td>
-                                                        <td><i class="fas fa-arrow-up text-success"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Margen EBITDA</td>
-                                                        <td>43.1%</td>
-                                                        <td>41.8%</td>
-                                                        <td class="text-success">+1.3pp</td>
-                                                        <td class="text-success">+2.5pp</td>
-                                                        <td><i class="fas fa-arrow-up text-success"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>ROI</td>
-                                                        <td>24.0%</td>
-                                                        <td>24.5%</td>
-                                                        <td class="text-danger">-0.5pp</td>
-                                                        <td class="text-success">+5.0pp</td>
-                                                        <td><i class="fas fa-arrow-down text-danger"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Costo por Transacción</td>
-                                                        <td>$0.38</td>
-                                                        <td>$0.35</td>
-                                                        <td class="text-danger">+8.0%</td>
-                                                        <td class="text-success">-5.0%</td>
-                                                        <td><i class="fas fa-arrow-down text-danger"></i></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="operational" role="tabpanel">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Métrica</th>
-                                                        <th>Actual</th>
-                                                        <th>Budget</th>
-                                                        <th>Var. %</th>
-                                                        <th>YoY</th>
-                                                        <th>Tendencia</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Transacciones Totales</td>
-                                                        <td>28.5M</td>
-                                                        <td>27.1M</td>
-                                                        <td class="text-success">+5.2%</td>
-                                                        <td class="text-success">+18.7%</td>
-                                                        <td><i class="fas fa-arrow-up text-success"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Tiempo Respuesta (ms)</td>
-                                                        <td>142</td>
-                                                        <td>135</td>
-                                                        <td class="text-danger">+5.2%</td>
-                                                        <td class="text-success">-12.3%</td>
-                                                        <td><i class="fas fa-arrow-up text-danger"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Disponibilidad</td>
-                                                        <td>99.98%</td>
-                                                        <td>99.99%</td>
-                                                        <td class="text-danger">-0.01pp</td>
-                                                        <td class="text-success">+0.05pp</td>
-                                                        <td><i class="fas fa-arrow-down text-danger"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Eficiencia Operativa</td>
-                                                        <td>92.5%</td>
-                                                        <td>93.0%</td>
-                                                        <td class="text-danger">-0.5pp</td>
-                                                        <td class="text-success">+1.2pp</td>
-                                                        <td><i class="fas fa-arrow-down text-danger"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Fraude Detectado</td>
-                                                        <td>98.7%</td>
-                                                        <td>98.5%</td>
-                                                        <td class="text-success">+0.2pp</td>
-                                                        <td class="text-success">+1.5pp</td>
-                                                        <td><i class="fas fa-arrow-up text-success"></i></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="customer" role="tabpanel">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Métrica</th>
-                                                        <th>Actual</th>
-                                                        <th>Budget</th>
-                                                        <th>Var. %</th>
-                                                        <th>YoY</th>
-                                                        <th>Tendencia</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>NPS</td>
-                                                        <td>68</td>
-                                                        <td>65</td>
-                                                        <td class="text-success">+4.6%</td>
-                                                        <td class="text-success">+15.3%</td>
-                                                        <td><i class="fas fa-arrow-up text-success"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Churn Rate</td>
-                                                        <td>2.1%</td>
-                                                        <td>2.3%</td>
-                                                        <td class="text-success">-8.7%</td>
-                                                        <td class="text-success">-22.2%</td>
-                                                        <td><i class="fas fa-arrow-down text-success"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Clientes Activos</td>
-                                                        <td>24</td>
-                                                        <td>23</td>
-                                                        <td class="text-success">+4.3%</td>
-                                                        <td class="text-success">+14.3%</td>
-                                                        <td><i class="fas fa-arrow-up text-success"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Satisfacción UX</td>
-                                                        <td>8.7</td>
-                                                        <td>8.5</td>
-                                                        <td class="text-success">+2.4%</td>
-                                                        <td class="text-success">+6.1%</td>
-                                                        <td><i class="fas fa-arrow-up text-success"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Tickets Soporte</td>
-                                                        <td>1,245</td>
-                                                        <td>1,350</td>
-                                                        <td class="text-success">-7.8%</td>
-                                                        <td class="text-success">-15.2%</td>
-                                                        <td><i class="fas fa-arrow-down text-success"></i></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="strategic" role="tabpanel">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Métrica</th>
-                                                        <th>Actual</th>
-                                                        <th>Budget</th>
-                                                        <th>Var. %</th>
-                                                        <th>YoY</th>
-                                                        <th>Tendencia</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Nuevos Productos</td>
-                                                        <td>2</td>
-                                                        <td>1</td>
-                                                        <td class="text-success">+100%</td>
-                                                        <td class="text-success">+100%</td>
-                                                        <td><i class="fas fa-arrow-up text-success"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Mercados Nuevos</td>
-                                                        <td>1</td>
-                                                        <td>2</td>
-                                                        <td class="text-danger">-50%</td>
-                                                        <td class="text-success">+0%</td>
-                                                        <td><i class="fas fa-arrow-down text-danger"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Alianzas Estratégicas</td>
-                                                        <td>3</td>
-                                                        <td>2</td>
-                                                        <td class="text-success">+50%</td>
-                                                        <td class="text-success">+200%</td>
-                                                        <td><i class="fas fa-arrow-up text-success"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Inversión en I+D</td>
-                                                        <td>$1.2M</td>
-                                                        <td>$1.0M</td>
-                                                        <td class="text-success">+20%</td>
-                                                        <td class="text-success">+33%</td>
-                                                        <td><i class="fas fa-arrow-up text-success"></i></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Patentes Registradas</td>
-                                                        <td>1</td>
-                                                        <td>1</td>
-                                                        <td class="text-success">+0%</td>
-                                                        <td class="text-success">+0%</td>
-                                                        <td><i class="fas fa-equals text-secondary"></i></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Contenido de estrategias aquí -->
             </div>
         </div>
     </div>
@@ -1439,7 +497,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js"></script>
     <script>
-        // Inicialización de gráficos
+        // Inicialización de gráficos (igual que en tu versión actual)
         const financialCtx = document.getElementById('financialChart').getContext('2d');
         new Chart(financialCtx, {
             type: 'line',
@@ -1524,6 +582,9 @@
                 this.classList.add('active');
             });
         });
+
+        // Mostrar dashboard por defecto
+        document.getElementById('dashboard-content').classList.remove('d-none');
     </script>
 </body>
 </html>
