@@ -1,0 +1,47 @@
+[
+    {
+        "id": "transferencias_salientes",
+        "name": "Transferencias Inmediatas Salientes",
+        "businessUnit": "Digital Payments",
+        "category": "core",
+        "description": "Transferencias inmediatas de salida a otras cuentas bancarias",
+        "annualRevenue": 0,
+        "annualTransactions": 0
+    },
+    {
+        "id": "debines",
+        "name": "Debines Salientes e Internet Banking",
+        "businessUnit": "Digital Payments",
+        "category": "complementary",
+        "description": "Transacciones de débito inmediato entre cuentas",
+        "annualRevenue": 0,
+        "annualTransactions": 0
+    },
+    {
+        "id": "pct",
+        "name": "Pagos con Transferencias (PCT)",
+        "businessUnit": "Instant Payments",
+        "category": "core",
+        "description": "Pagos a comercios mediante transferencias inmediatas",
+        "annualRevenue": 0,
+        "annualTransactions": 0
+    },
+    {
+        "id": "transferencias_entrantes",
+        "name": "Transferencias Entrantes para PSPs",
+        "businessUnit": "Instant Payments",
+        "category": "core",
+        "description": "Transferencias entrantes a través de un banco sponsor",
+        "annualRevenue": 0,
+        "annualTransactions": 0
+    },
+    {
+        "id": "transferencias_salientes_psp",
+        "name": "Transferencias Salientes para PSPs",
+        "businessUnit": "Instant Payments",
+        "category": "core",
+        "description": "Transferencias salientes a través de un banco sponsor",
+        "annualRevenue": 0,
+        "annualTransactions": 0
+    }
+]

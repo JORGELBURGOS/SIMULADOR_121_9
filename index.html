@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewPay - Simulador de Estrategias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <img src="newpay-logo.png" alt="NewPay Logo" class="logo">
+                <h1>Simulador de Estrategias</h1>
+            </div>
+            <nav>
+                <ul class="nav-tabs">
+                    <li class="active" data-tab="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                    <li data-tab="financials"><i class="fas fa-file-invoice-dollar"></i> P&L</li>
+                    <li data-tab="pestel"><i class="fas fa-globe-americas"></i> Análisis Entorno</li>
+                    <li data-tab="porter"><i class="fas fa-chess-board"></i> Análisis Competitivo</li>
+                    <li data-tab="bcg"><i class="fas fa-chart-pie"></i> Matriz Crecimiento</li>
+                    <li data-tab="strategies"><i class="fas fa-chess-knight"></i> Estrategias</li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Dashboard -->
+        <section id="dashboard" class="tab-content active">
+            <h2><i class="fas fa-tachometer-alt"></i> Dashboard de KPIs</h2>
+            <div class="kpi-container">
+                <div class="kpi-card">
+                    <h3>EBITDA</h3>
+                    <div class="kpi-value" id="kpi-ebitda">$0</div>
+                    <div class="kpi-comparison">
+                        <span class="trend up"><i class="fas fa-arrow-up"></i> 5%</span> vs Budget
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <h3>ROI</h3>
+                    <div class="kpi-value" id="kpi-roi">0%</div>
+                    <div class="kpi-comparison">
+                        <span class="trend down"><i class="fas fa-arrow-down"></i> 2%</span> vs Budget
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <h3>Transacciones</h3>
+                    <div class="kpi-value" id="kpi-transactions">0</div>
+                    <div class="kpi-comparison">
+                        <span class="trend up"><i class="fas fa-arrow-up"></i> 8%</span> vs Año anterior
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <h3>NPS</h3>
+                    <div class="kpi-value" id="kpi-nps">0</div>
+                    <div class="kpi-comparison">
+                        <span class="trend neutral"><i class="fas fa-equals"></i> 0%</span> vs Mes anterior
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>Ingresos por Unidad de Negocio</h3>
+                    <div id="revenue-by-unit-chart"></div>
+                </div>
+                <div class="chart-container">
+                    <h3>Transacciones por Producto</h3>
+                    <div id="transactions-by-product-chart"></div>
+                </div>
+            </div>
+
+            <div class="chart-row">
+                <div class="chart-container full-width">
+                    <h3>Evolución Financiera</h3>
+                    <canvas id="financial-evolution-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- P&L -->
+        <section id="financials" class="tab-content">
+            <h2><i class="fas fa-file-invoice-dollar"></i> Estado de Resultados</h2>
+            <div class="controls">
+                <button id="reset-financials" class="btn btn-secondary">Reiniciar Valores</button>
+                <button id="auto-calculate" class="btn btn-primary">Calcular Automáticamente</button>
+            </div>
+            
+            <div class="financial-table-container">
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Valor</th>
+                            <th>% sobre Ingresos</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="financial-table-body">
+                        <!-- Rellenado por JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>Composición del P&L</h3>
+                    <div id="profit-composition-chart"></div>
+                </div>
+                <div class="chart-container">
+                    <h3>Margen EBITDA</h3>
+                    <div id="ebitda-margin-chart"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PESTEL -->
+        <section id="pestel" class="tab-content">
+            <h2><i class="fas fa-globe-americas"></i> Análisis del Entorno</h2>
+            <div class="analysis-description">
+                <p>Analiza los factores externos que pueden afectar a NewPay. Selecciona variables clave y asigna su impacto potencial.</p>
+            </div>
+            
+            <div class="factor-container">
+                <!-- Rellenado por JavaScript -->
+            </div>
+            
+            <div class="chart-container full-width">
+                <h3>Resumen de Impacto</h3>
+                <canvas id="pestel-radar-chart"></canvas>
+            </div>
+            
+            <div class="strategies-container">
+                <h3>Estrategias Sugeridas</h3>
+                <div id="pestel-strategies-list" class="strategies-list">
+                    <!-- Rellenado por JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Porter -->
+        <section id="porter" class="tab-content">
+            <h2><i class="fas fa-chess-board"></i> Análisis Competitivo</h2>
+            <div class="analysis-description">
+                <p>Evalúa las fuerzas competitivas que afectan a NewPay en el mercado de pagos digitales.</p>
+            </div>
+            
+            <div class="factor-container">
+                <!-- Rellenado por JavaScript -->
+            </div>
+            
+            <div class="chart-container full-width">
+                <h3>Resumen de Fuerzas Competitivas</h3>
+                <canvas id="porter-radar-chart"></canvas>
+            </div>
+            
+            <div class="strategies-container">
+                <h3>Estrategias Sugeridas</h3>
+                <div id="porter-strategies-list" class="strategies-list">
+                    <!-- Rellenado por JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- BCG -->
+        <section id="bcg" class="tab-content">
+            <h2><i class="fas fa-chart-pie"></i> Matriz de Crecimiento</h2>
+            <div class="analysis-description">
+                <p>Analiza tus unidades de negocio según su participación de mercado y tasa de crecimiento.</p>
+            </div>
+            
+            <div class="bcg-controls">
+                <div class="form-group">
+                    <label for="growth-metric">Métrica de Crecimiento:</label>
+                    <select id="growth-metric" class="form-control">
+                        <option value="market_growth">Crecimiento del Mercado</option>
+                        <option value="revenue_growth">Crecimiento de Ingresos</option>
+                        <option value="transaction_growth">Crecimiento de Transacciones</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="share-metric">Métrica de Participación:</label>
+                    <select id="share-metric" class="form-control">
+                        <option value="market_share">Participación de Mercado</option>
+                        <option value="revenue_share">Participación en Ingresos</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="bcg-matrix-container">
+                <div class="bcg-matrix">
+                    <div class="bcg-axis">
+                        <span class="bcg-label">Alta</span>
+                        <span class="bcg-label">Participación</span>
+                        <span class="bcg-label">Baja</span>
+                    </div>
+                    <div class="bcg-grid">
+                        <div class="bcg-quadrant" id="stars">
+                            <h3>Estrellas</h3>
+                            <div class="bcg-items" id="stars-items"></div>
+                        </div>
+                        <div class="bcg-quadrant" id="question-marks">
+                            <h3>Incógnitas</h3>
+                            <div class="bcg-items" id="question-marks-items"></div>
+                        </div>
+                        <div class="bcg-quadrant" id="cash-cows">
+                            <h3>Vacas</h3>
+                            <div class="bcg-items" id="cash-cows-items"></div>
+                        </div>
+                        <div class="bcg-quadrant" id="dogs">
+                            <h3>Perros</h3>
+                            <div class="bcg-items" id="dogs-items"></div>
+                        </div>
+                    </div>
+                    <div class="bcg-axis horizontal">
+                        <span class="bcg-label">Bajo</span>
+                        <span class="bcg-label">Crecimiento</span>
+                        <span class="bcg-label">Alto</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="strategy-selection">
+                <h3>Selección de Estrategia</h3>
+                <div class="form-group">
+                    <label for="business-unit-select">Unidad de Negocio:</label>
+                    <select id="business-unit-select" class="form-control">
+                        <!-- Rellenado por JavaScript -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="growth-strategy">Estrategia de Crecimiento:</label>
+                    <select id="growth-strategy" class="form-control">
+                        <option value="penetration">Penetración de Mercado</option>
+                        <option value="development">Desarrollo de Producto</option>
+                        <option value="expansion">Expansión de Mercado</option>
+                        <option value="diversification">Diversificación</option>
+                    </select>
+                </div>
+                <button id="apply-bcg-strategy" class="btn btn-primary">Aplicar Estrategia</button>
+            </div>
+            
+            <div class="strategies-container">
+                <h3>Estrategias Sugeridas</h3>
+                <div id="bcg-strategies-list" class="strategies-list">
+                    <!-- Rellenado por JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategies -->
+        <section id="strategies" class="tab-content">
+            <h2><i class="fas fa-chess-knight"></i> Simulador de Estrategias</h2>
+            <div class="strategies-description">
+                <p>Implementa estrategias basadas en tus análisis y observa su impacto en el negocio.</p>
+            </div>
+            
+            <div class="strategies-controls">
+                <div class="form-group">
+                    <label for="strategy-source">Fuente de Estrategia:</label>
+                    <select id="strategy-source" class="form-control">
+                        <option value="all">Todas las estrategias</option>
+                        <option value="pestel">Análisis del Entorno</option>
+                        <option value="porter">Análisis Competitivo</option>
+                        <option value="bcg">Matriz de Crecimiento</option>
+                        <option value="custom">Personalizada</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="strategy-filter">Filtrar por:</label>
+                    <select id="strategy-filter" class="form-control">
+                        <option value="all">Todas</option>
+                        <option value="digital_payments">Digital Payments</option>
+                        <option value="instant_payments">Instant Payments</option>
+                        <option value="new_products">Nuevos Productos</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="strategies-list-container">
+                <div class="available-strategies">
+                    <h3>Estrategias Disponibles</h3>
+                    <div id="available-strategies-list" class="strategies-list">
+                        <!-- Rellenado por JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="strategy-details" id="strategy-details">
+                    <div class="no-strategy-selected">
+                        <p>Selecciona una estrategia para ver detalles y simular su impacto.</p>
+                    </div>
+                    <div class="strategy-form" style="display: none;">
+                        <h3 id="strategy-form-title">Detalles de Estrategia</h3>
+                        <div class="form-group">
+                            <label for="strategy-name">Nombre:</label>
+                            <input type="text" id="strategy-name" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="strategy-description">Descripción:</label>
+                            <textarea id="strategy-description" class="form-control" rows="3" readonly></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="strategy-business-unit">Unidad de Negocio:</label>
+                            <select id="strategy-business-unit" class="form-control">
+                                <!-- Rellenado por JavaScript -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="strategy-product">Producto:</label>
+                            <select id="strategy-product" class="form-control">
+                                <!-- Rellenado por JavaScript -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="strategy-investment">Inversión ($):</label>
+                            <input type="number" id="strategy-investment" class="form-control" min="0" step="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="strategy-duration">Duración (meses):</label>
+                            <input type="number" id="strategy-duration" class="form-control" min="1" max="36" value="12">
+                        </div>
+                        <div class="form-group">
+                            <label for="strategy-growth">Crecimiento Esperado (%):</label>
+                            <input type="number" id="strategy-growth" class="form-control" min="0" max="100" step="1" value="10">
+                        </div>
+                        <button id="simulate-strategy" class="btn btn-primary">Simular Estrategia</button>
+                        <button id="save-strategy" class="btn btn-secondary">Guardar para más tarde</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="active-strategies">
+                <h3>Estrategias Activas</h3>
+                <div id="active-strategies-list" class="strategies-list">
+                    <!-- Rellenado por JavaScript -->
+                </div>
+            </div>
+            
+            <div class="strategy-impact">
+                <h3>Impacto de Estrategias Seleccionadas</h3>
+                <div class="chart-row">
+                    <div class="chart-container">
+                        <h4>Impacto en Ingresos</h4>
+                        <div id="strategy-revenue-impact-chart"></div>
+                    </div>
+                    <div class="chart-container">
+                        <h4>Impacto en Transacciones</h4>
+                        <div id="strategy-transactions-impact-chart"></div>
+                    </div>
+                </div>
+                <div class="chart-row">
+                    <div class="chart-container full-width">
+                        <h4>Impacto Financiero Acumulado</h4>
+                        <canvas id="strategy-financial-impact-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>NewPay Simulator &copy; 2023. Herramienta estratégica para análisis de negocios.</p>
+        </div>
+    </footer>
+
+    <!-- Modal para detalles de estrategia -->
+    <div class="modal fade" id="strategyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="strategyModalTitle">Detalles de Estrategia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="strategyModalBody">
+                    <!-- Contenido dinámico -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="applyStrategyFromModal">Aplicar Estrategia</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+    <script src="financials.js"></script>
+    <script src="pestel.js"></script>
+    <script src="porter.js"></script>
+    <script src="bcg.js"></script>
+    <script src="ansoff.js"></script>
+    <script src="strategies.js"></script>
+</body>
+</html>
